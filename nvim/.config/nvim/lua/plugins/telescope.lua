@@ -98,7 +98,7 @@ return {
       end, { desc = '[P]roject Files' })
 
       vim.keymap.set('n', '<leader>fb', function()
-        file_browser.file_browser { initial_mode = 'normal' }
+        file_browser.file_browser { initial_mode = 'normal', cwd = '%:p:h' }
       end, { desc = '[F]ile [B]rowser' })
 
       vim.keymap.set('n', '<leader>P', function()
