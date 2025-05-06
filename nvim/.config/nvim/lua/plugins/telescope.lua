@@ -18,10 +18,9 @@ return {
           return vim.fn.executable 'make' == 1
         end,
       },
-      { 'nvim-telescope/telescope-ui-select.nvim' },
-
-      -- Useful for getting pretty icons, but requires a Nerd Font.
+      'nvim-telescope/telescope-ui-select.nvim',
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      'nvim-telescope/telescope-file-browser.nvim',
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -59,12 +58,17 @@ return {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
+          file_browser = {
+            -- disables netrw and use telescope-file-browser in its place
+            hijack_netrw = true,
+          },
         },
       }
 
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
+      pcall(require('telescope').load_extension, 'file-browser')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -78,6 +82,28 @@ return {
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+
+      local function get_git_root()
+        local dot_git_path = vim.fn.finddir('.git', '.;')
+        return vim.fn.fnamemodify(dot_git_path, ':h')
+      end
+
+      local file_browser = require('telescope').extensions.file_browser
+
+      vim.keymap.set('n', '<leader>p', function()
+        file_browser.file_browser {
+          cwd = get_git_root(),
+          hide_parent_dir = true,
+        }
+      end, { desc = '[P]roject Files' })
+
+      vim.keymap.set('n', '<leader>fb', function()
+        file_browser.file_browser { initial_mode = 'normal' }
+      end, { desc = '[F]ile [B]rowser' })
+
+      vim.keymap.set('n', '<leader>P', function()
+        file_browser.file_browser { path = '~/dev', hide_parent_dir = true, cwd_to_path = true }
+      end, { desc = 'View [P]rojects' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -102,12 +128,5 @@ return {
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
     end,
-  },
-  {
-    'nvim-telescope/telescope-file-browser.nvim',
-    dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' },
-    keys = {
-      { '<space>fb', ':Telescope file_browser path=%:p:h select_buffer=true<CR>' },
-    },
   },
 }
