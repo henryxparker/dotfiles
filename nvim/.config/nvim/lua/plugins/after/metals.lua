@@ -45,7 +45,6 @@ return {
 
       -- Example of settings
       metals_config.settings = {
-        showImplicitArguments = true,
         defaultBspToBuildTool = true,
         excludedPackages = { 'akka.actor.typed.javadsl', 'com.github.swagger.akka.javadsl' },
         inlayHints = {
@@ -73,14 +72,12 @@ return {
 
       metals_config.on_attach = function(client, bufnr)
         require('metals').setup_dap()
-        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+        -- vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 
         -- LSP mappings
         map('n', 'K', vim.lsp.buf.hover)
-        map('n', 'gi', vim.lsp.buf.implementation)
-        map('n', 'gr', vim.lsp.buf.references)
         map('n', '<leader>cl', vim.lsp.codelens.run)
-        map('n', '<leader>hs', vim.lsp.buf.signature_help)
+        map('n', 'gs', vim.lsp.buf.signature_help)
 
         map('n', '<leader>b', function()
           require('telescope').extensions.metals.commands()

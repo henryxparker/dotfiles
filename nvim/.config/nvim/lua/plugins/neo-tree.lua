@@ -11,9 +11,12 @@ return {
   },
   cmd = 'Neotree',
   keys = {
-    { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
+    { '\\', ':Neotree reveal_force_cwd<CR>', desc = 'NeoTree reveal', silent = true },
   },
   opts = {
+    close_if_last_window = true,
+    enable_git_status = true,
+    reveal_force_cwd = true,
     filesystem = {
       bind_to_cwd = true,
       group_empty_dirs = true,
@@ -21,6 +24,15 @@ return {
         mappings = {
           ['\\'] = 'close_window',
         },
+      },
+    },
+    source_selector = {
+      winbar = false,
+      statusline = false,
+      sources = {
+        { source = 'filesystem' },
+        -- { source = 'buffers' },
+        { source = 'git_status' },
       },
     },
   },

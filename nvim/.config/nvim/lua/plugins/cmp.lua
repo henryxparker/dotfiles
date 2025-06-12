@@ -68,6 +68,7 @@ return {
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
           ['<C-Space>'] = cmp.mapping.confirm { select = true },
+          ['<C-CR>'] = cmp.mapping.confirm { select = true },
 
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
@@ -117,4 +118,3 @@ return {
     end,
   },
 }
-
