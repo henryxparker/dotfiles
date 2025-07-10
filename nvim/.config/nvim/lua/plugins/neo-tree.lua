@@ -8,24 +8,17 @@ return {
     'nvim-lua/plenary.nvim',
     'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
     'MunifTanjim/nui.nvim',
+    'TimCreasman/neo-tree-tests-source.nvim',
   },
   cmd = 'Neotree',
   keys = {
-    { '\\', ':Neotree reveal_force_cwd<CR>', desc = 'NeoTree reveal', silent = true },
+    { '\\', ':Neotree reveal_force_cwd toggle last<CR>', desc = 'NeoTree reveal', silent = true },
   },
   opts = {
     close_if_last_window = true,
     enable_git_status = true,
     reveal_force_cwd = true,
-    filesystem = {
-      bind_to_cwd = true,
-      group_empty_dirs = true,
-      window = {
-        mappings = {
-          ['\\'] = 'close_window',
-        },
-      },
-    },
+    sources = { 'filesystem', 'git_status', 'tests' },
     source_selector = {
       winbar = false,
       statusline = false,
@@ -33,6 +26,14 @@ return {
         { source = 'filesystem' },
         -- { source = 'buffers' },
         { source = 'git_status' },
+        { source = 'tests' },
+      },
+    },
+    filesystem = {
+      bind_to_cwd = true,
+      group_empty_dirs = true,
+      window = {
+        mappings = {},
       },
     },
   },
