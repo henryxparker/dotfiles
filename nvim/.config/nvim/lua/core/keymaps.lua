@@ -39,3 +39,9 @@ map('n', '<S-Escape>', '<cmd>qa!<CR>', { desc = 'Quit nvim on Shift Esc' })
 
 map('n', '<leader>og', '<cmd>Neogit cwd=%:p:h<CR>')
 map({ 'n', 'i' }, '<C-s>', '<cmd>w<cr>', { desc = 'Save with ctrl-s :)' })
+
+--since I made delete not copy to clipboard, I need a cut
+map('n', 'x', 'd', { noremap = true })
+
+map('n', 'xx', 'dd', { noremap = true })
+map('n', 'X', 'D', {noremap = true})
