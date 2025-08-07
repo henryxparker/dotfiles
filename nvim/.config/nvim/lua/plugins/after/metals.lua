@@ -1,5 +1,3 @@
-local fn = vim.fn
-
 return {
   {
     'scalameta/nvim-metals',
@@ -78,7 +76,6 @@ return {
         end
 
         require('metals').setup_dap()
-        -- vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 
         -- LSP mappings
         map('K', vim.lsp.buf.hover)
@@ -109,7 +106,7 @@ return {
         -- buffer diagnostics only
         map('<leader>d', vim.diagnostic.setloclist)
 
-        vim.lsp.inlay_hint.enable(true) --open scala files with hints
+        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
         map('<leader>th', function()
           vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = bufnr })
         end, '[T]oggle Inlay [H]ints')

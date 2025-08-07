@@ -20,7 +20,7 @@ return {
     reveal_force_cwd = true,
     sources = { 'filesystem', 'git_status', 'tests' },
     source_selector = {
-      winbar = false,
+      winbar = true,
       statusline = false,
       sources = {
         { source = 'filesystem' },
