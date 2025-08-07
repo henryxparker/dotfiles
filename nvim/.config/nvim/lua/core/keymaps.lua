@@ -34,7 +34,8 @@ map('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
 map('n', '<Esc><Esc>', '<cmd>quit!<CR>', { desc = 'Quit any window with double Esc' })
+map('n', '<esc><tab>', '<cmd>tabclose<cr>', { desc = 'Close tab with Esc Tab' })
+map('n', '<S-Escape>', '<cmd>qa!<CR>', { desc = 'Quit nvim on Shift Esc' })
 
 map('n', '<leader>og', '<cmd>Neogit cwd=%:p:h<CR>')
 map({ 'n', 'i' }, '<C-s>', '<cmd>w<cr>', { desc = 'Save with ctrl-s :)' })
-map('n', '<esc><tab>', '<cmd>tabclose<cr>')
