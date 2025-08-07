@@ -62,7 +62,7 @@ return {
               callback = vim.lsp.buf.document_highlight,
             })
 
-            local TIMEOUT = 800
+            local TIMEOUT = 2000
             local timer = vim.uv.new_timer()
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
@@ -85,7 +85,9 @@ return {
               group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
               callback = function(event2)
                 vim.lsp.buf.clear_references()
-                timer:close()
+                if timer and not timer:is_closing() then
+                  timer:close()
+                end
                 vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
               end,
             })

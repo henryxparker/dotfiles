@@ -45,9 +45,6 @@ return {
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
       require('telescope').setup {
-        -- You can put your default mappings / updates / etc. in here
-        --  All the info you're looking for is in `:help telescope.setup()`
-        --
         -- defaults = {
         --   mappings = {
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
@@ -90,20 +87,16 @@ return {
 
       local file_browser = require('telescope').extensions.file_browser
 
-      vim.keymap.set('n', '<leader>p', function()
+      vim.keymap.set('n', '<leader>sp', function()
         file_browser.file_browser {
           cwd = get_git_root(),
           hide_parent_dir = true,
         }
-      end, { desc = '[P]roject Files' })
+      end, { desc = '[S]earch [P]roject Files' })
 
       vim.keymap.set('n', '<leader>fb', function()
         file_browser.file_browser { initial_mode = 'normal', cwd = '%:p:h' }
       end, { desc = '[F]ile [B]rowser' })
-
-      vim.keymap.set('n', '<leader>P', function()
-        file_browser.file_browser { path = '~/dev', hide_parent_dir = true, cwd_to_path = true }
-      end, { desc = 'View [P]rojects' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()

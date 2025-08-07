@@ -37,3 +37,44 @@ autocmd('BufEnter', {
   end,
 })
 
+-----------------------------------------------------------
+-- OSC7
+-----------------------------------------------------------
+
+-- vim.api.nvim_create_autocmd({ 'TermRequest' }, {
+--   callback = function(e)
+--     if string.sub(vim.v.termrequest, 1, 4) == '\x1b]7;' then
+--       local dir = string.gsub(vim.v.termrequest, '\x1b]7;file://[^/]*', '')
+--       if vim.fn.isdirectory(dir) == 0 then
+--         return
+--       end
+--       vim.api.nvim_buf_set_var(e.buf, 'last_osc7_payload', dir)
+--       if vim.api.nvim_get_current_buf() == e.buf then
+--         vim.cmd.cd(dir)
+--       end
+--     end
+--   end,
+-- })
+-- vim.api.nvim_create_autocmd({ 'bufenter', 'winenter', 'dirchanged' }, {
+--
+--   callback = function(e)
+--     if vim.b.last_osc7_payload ~= nil and vim.fn.isdirectory(vim.b.last_osc7_payload) == 1 then
+--       vim.cmd.cd(vim.b.last_osc7_payload)
+--     end
+--   end,
+-- })
+--
+-- -- Update OSC7 for terminal emulator
+-- local function update_osc7()
+--   local cwd = vim.fn.getcwd()
+--   local uri = 'file://' .. vim.fn.hostname() .. cwd
+--   io.stdout:write('\27]7;' .. uri .. '\27\\')
+-- end
+--
+-- -- Update OSC7 when CWD is changed
+-- vim.api.nvim_create_autocmd('DirChanged', {
+--   callback = update_osc7,
+-- })
+--
+-- -- Send OSC 7 on startup in case Neovim was launched with a different CWD
+-- update_osc7()

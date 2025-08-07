@@ -12,7 +12,7 @@ return {
   },
   cmd = 'Neotree',
   keys = {
-    { '\\', ':Neotree reveal_force_cwd toggle last<CR>', desc = 'NeoTree reveal', silent = true },
+    { '\\', ':Neotree reveal_force_cwd last<CR>', desc = 'NeoTree reveal', silent = true },
   },
   opts = {
     close_if_last_window = true,
@@ -33,7 +33,7 @@ return {
       bind_to_cwd = true,
       group_empty_dirs = true,
       window = {
-        mappings = {},
+        mappings = { ['\\'] = 'close_window' },
       },
     },
   },

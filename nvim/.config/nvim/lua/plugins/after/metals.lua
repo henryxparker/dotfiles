@@ -1,4 +1,3 @@
-local map = vim.keymap.set
 local fn = vim.fn
 
 return {
@@ -48,11 +47,12 @@ return {
         defaultBspToBuildTool = true,
         excludedPackages = { 'akka.actor.typed.javadsl', 'com.github.swagger.akka.javadsl' },
         inlayHints = {
-          hintsInPatternMatch = { enable = true },
+          hintsInPatternMatch = { enable = false },
           implicitArguments = { enable = false },
           implicitConversions = { enable = false },
-          inferredTypes = { enable = true },
+          inferredTypes = { enable = false },
           typeParameters = { enable = true },
+          hintsXRayMode = { enable = true },
         },
       }
 
@@ -71,73 +71,76 @@ return {
       metals_config.capabilities = require('cmp_nvim_lsp').default_capabilities()
 
       metals_config.on_attach = function(client, bufnr)
+        local map = function(keys, func, desc, mode)
+          mode = mode or 'n'
+          desc = desc or ''
+          vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = 'LSP: ' .. desc })
+        end
+
         require('metals').setup_dap()
         -- vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 
         -- LSP mappings
-        map('n', 'K', vim.lsp.buf.hover)
-        map('n', '<leader>cl', vim.lsp.codelens.run)
-        map('n', 'gs', vim.lsp.buf.signature_help)
+        map('K', vim.lsp.buf.hover)
+        map('<leader>cl', vim.lsp.codelens.run)
+        map('gs', vim.lsp.buf.signature_help)
 
-        map('n', '<leader>b', function()
+        map('<leader>b', function()
           require('telescope').extensions.metals.commands()
         end)
 
-        map('n', '<leader>ws', function()
+        map('<leader>ws', function()
           require('metals').hover_worksheet()
         end)
 
         -- all workspace diagnostics
-        map('n', '<leader>aa', vim.diagnostic.setqflist)
+        map('<leader>aa', vim.diagnostic.setqflist)
 
         -- all workspace errors
-        map('n', '<leader>ae', function()
+        map('<leader>ae', function()
           vim.diagnostic.setqflist { severity = 'E' }
         end)
 
         -- all workspace warnings
-        map('n', '<leader>aw', function()
+        map('<leader>aw', function()
           vim.diagnostic.setqflist { severity = 'W' }
         end)
 
         -- buffer diagnostics only
-        map('n', '<leader>d', vim.diagnostic.setloclist)
+        map('<leader>d', vim.diagnostic.setloclist)
 
-        map('n', '[c', function()
-          vim.diagnostic.goto_prev { wrap = false }
-        end)
-
-        map('n', ']c', function()
-          vim.diagnostic.goto_next { wrap = false }
-        end)
+        vim.lsp.inlay_hint.enable(true) --open scala files with hints
+        map('<leader>th', function()
+          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = bufnr })
+        end, '[T]oggle Inlay [H]ints')
 
         -- Example mappings for usage with nvim-dap. If you don't use that, you can
         -- skip these
-        map('n', '<leader>dc', function()
+        map('<leader>dc', function()
           require('dap').continue()
         end)
 
-        map('n', '<leader>dr', function()
+        map('<leader>dr', function()
           require('dap').repl.toggle()
         end)
 
-        map('n', '<leader>dK', function()
+        map('<leader>dK', function()
           require('dap.ui.widgets').hover()
         end)
 
-        map('n', '<leader>dt', function()
+        map('<leader>dt', function()
           require('dap').toggle_breakpoint()
         end)
 
-        map('n', '<leader>dso', function()
+        map('<leader>dso', function()
           require('dap').step_over()
         end)
 
-        map('n', '<leader>dsi', function()
+        map('<leader>dsi', function()
           require('dap').step_into()
         end)
 
-        map('n', '<leader>dl', function()
+        map('<leader>dl', function()
           require('dap').run_last()
         end)
       end
