@@ -1,3 +1,6 @@
+local diffclose = function()
+  vim.cmd [[DiffviewClose]]
+end
 return {
   {
     'kdheepak/lazygit.nvim',
@@ -21,8 +24,18 @@ return {
       require('telescope').load_extension 'lazygit'
     end,
   },
-  { 'sindrets/diffview.nvim', keys = {
-    { '<leader>dv', '<cmd>DiffviewOpen<cr>', desc = 'Open [D]iff[v]iew' },
-  } },
+  {
+    'sindrets/diffview.nvim',
+    keys = {
+      { '<leader>dv', '<cmd>DiffviewOpen<cr>', desc = 'Open [D]iff[v]iew' },
+    },
+    opts = {
+      keymaps = {
+        file_panel = {
+          { 'n', 'q', diffclose, { desc = 'Close Diffview' } },
+        },
+      },
+    },
+  },
   { 'tpope/vim-fugitive' },
 }

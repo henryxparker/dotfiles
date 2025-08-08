@@ -1,6 +1,6 @@
 -- Neo-tree is a Neovim plugin to browse the file system
 -- https://github.com/nvim-neo-tree/neo-tree.nvim
-local goto = function (name)
+local function go_to_source(name)
   return function(state)
     require('neo-tree.command').execute {
       source = name,
@@ -8,6 +8,31 @@ local goto = function (name)
       action = 'focus',
     }
   end
+end
+
+local goto_git = go_to_source 'git_status'
+
+local goto_fs = go_to_source 'filesystem'
+
+local show_diff = function(state)
+  -- some variables. use any if you want
+  local node = state.tree:get_node()
+  local abs_path = node.path
+  local file_name = node.name
+  local is_file = node.type == 'file'
+  if not is_file then
+    vim.notify('Diff only for files', vim.log.levels.ERROR)
+    return
+  end
+  -- open file
+  local cc = require 'neo-tree.sources.common.commands'
+  cc.open(state, function()
+    -- do nothing for dirs
+  end)
+
+  require 'diffview'
+  -- diffview.nvim
+  vim.cmd('DiffviewOpen --selected-file=' .. abs_path)
 end
 
 return {
@@ -47,14 +72,17 @@ return {
       bind_to_cwd = true,
       group_empty_dirs = true,
       window = {
-        mappings = { ['G'] = goto("git_status") },
+        mappings = { ['G'] = goto_git },
       },
     },
     git_status = {
       bind_to_cwd = true,
       group_empty_dirs = true,
       window = {
-        mappings = { ['F'] = goto("filesystem") },
+        mappings = {
+          ['F'] = goto_fs,
+          ['D'] = show_diff,
+        },
       },
     },
   },
