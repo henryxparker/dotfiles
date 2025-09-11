@@ -33,6 +33,7 @@ return {
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
           map('gh', vim.lsp.buf.hover, '[G]et [H]over (idk)')
+          map('gl', vim.lsp.codelens.run, '[G]et Code[L]ens')
 
           -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
           ---@param client vim.lsp.Client
